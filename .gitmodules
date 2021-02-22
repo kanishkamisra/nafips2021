@@ -1,0 +1,3 @@
+[submodule "python/minicons"]
+	path = python/minicons
+	url = https://github.com/kanishkamisra/minicons
