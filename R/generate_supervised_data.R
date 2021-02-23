@@ -29,6 +29,11 @@ trapezoidal <- function(x, a, b, c, d) {
   }
 }
 
+gbell <- function(x, width, peaking, center) {
+  return(1/(1 + ((x - center)/width)^(2*peaking)))
+}
+
+
 vshort <- function(height) {
   return(trapezoidal(height, 37.5, 50, 125, 137.5))
 }
@@ -51,6 +56,11 @@ tall <- function(height) {
 vtall <- function(height) {
   return(trapezoidal(height, 200, 212.5, 300, 400))
 }
+
+critical_values <- c(50, seq(125, 212.5, by = 12.5), 300)
+
+seq(50, 300, by = 0.01) %>%
+  discard(. %in% critical_values)
 
 set.seed(1234)
 
@@ -105,10 +115,15 @@ heights %>%
 
 ## Rules for train, dev, test -- all boundary values in train, 
 ## dev and test disjoint from train and from each other.
-critical_values <- c(50, seq(125, 212.5, by = 12.5), 300)
-
-seq(50, 300, by = 0.01) %>%
-  discard(. %in% critical_values)
+heights %>%
+  filter(between(height, 100, 200)) %>%
+  mutate(
+    short = map_dbl(height, function(x) trapezoidal(x, 125, 137.5, 150, 162.5)),
+    con = short^2
+  ) %>%
+  select(height, short, con) %>% pivot_longer(short:con) %>%
+  ggplot(aes(height, value, color = name)) +
+  geom_line()
 
 heights %>%
   pivot_longer(vshort:vtall, names_to = "fuzzyset", values_to = "membership") %>%
@@ -134,10 +149,6 @@ tibble(height = 0:100) %>%
   mutate(y = map_dbl(height, trapezoidal, a = -25, b = 0, c = 50, d = 75)) %>%
   ggplot(aes(height, y)) +
   geom_line()
-
-gbell <- function(x, width, peaking, center) {
-  return(1/(1 + ((x - center)/width)^(2*peaking)))
-}
 
 tibble(x = seq(100, 300, by = 0.01), y = gbell(x, 12.5, 4, 143.75)) %>%
   ggplot(aes(x, y)) +
