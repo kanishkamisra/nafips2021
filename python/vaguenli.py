@@ -45,7 +45,7 @@ model = supervised.SupervisedHead(model_name, device)
 if "/" in model_name:
     model_name = model_name.replace("/", "_")
 
-results_file = f"{data_dir}/results/{model_name}__{dataset_name}"
+results_file = f"{data_dir}/results/{model_name}__{dataset_name}.csv"
 
 contradiction = []
 neutral = []
