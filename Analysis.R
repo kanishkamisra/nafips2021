@@ -23,3 +23,54 @@ height_results %>%
   geom_line() +
   scale_y_continuous(limits = c(0, 1.0)) +
   theme(legend.position = "top")
+
+nounit_results <- read_csv("data/results/roberta-large-mnli__nounit_nli.csv")
+
+nounit_results %>%
+  mutate(categories = factor(categories, levels = c("freezing", "cold", "cool", "warm", "hot"))) %>%
+  ggplot(aes(temperature, entailment, color = categories)) +
+  # geom_smooth(method = "gam") +
+  geom_line() +
+  scale_color_brewer(palette = "RdYlBu", direction = -1) + 
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~location) +
+  theme_bw(base_family = "CMU Sans Serif Medium", base_size = 16) +
+  theme(
+    legend.position = "top",
+    panel.grid = element_blank(),
+    plot.margin = margin(0.2, 0.5, 0.2, 0.2, "cm")
+  )
+
+celsius_results <- read_csv("data/results/roberta-large-mnli__celsius_nli.csv")
+
+celsius_results %>%
+  mutate(categories = factor(categories, levels = c("freezing", "cold", "cool", "warm", "hot"))) %>%
+  ggplot(aes(temperature, entailment, color = categories)) +
+  # geom_smooth(method = "gam") +
+  geom_line() +
+  # scale_color_brewer(palette = "RdYlBu", direction = -1) + 
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~location) +
+  theme_bw(base_family = "CMU Sans Serif Medium", base_size = 16) +
+  theme(
+    legend.position = "top",
+    panel.grid = element_blank(),
+    plot.margin = margin(0.2, 0.5, 0.2, 0.2, "cm")
+  )
+
+fahrenheit_results <- read_csv("data/results/roberta-large-mnli__fahrenheit_nli.csv")
+
+fahrenheit_results %>%
+  mutate(categories = factor(categories, levels = c("freezing", "cold", "cool", "warm", "hot"))) %>%
+  ggplot(aes(temperature, entailment, color = categories)) +
+  # geom_smooth(method = "gam") +
+  geom_line() +
+  # scale_color_brewer(palette = "RdYlBu", direction = -1) + 
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~location) +
+  theme_bw(base_family = "CMU Sans Serif Medium", base_size = 16) +
+  theme(
+    legend.position = "top",
+    panel.grid = element_blank(),
+    plot.margin = margin(0.2, 0.5, 0.2, 0.2, "cm")
+  )
