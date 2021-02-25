@@ -131,8 +131,8 @@ heights %>%
   ggplot(aes(height, membership, color = fuzzyset)) +
   geom_line(size = 1.2) +
   scale_x_continuous(breaks = seq(50, 300, by = 25), expand = c(0,0)) +
-  # scale_color_brewer(palette = "BrBg") +
-  scale_color_manual(values = cartography::carto.pal("blue.pal", 5)) +
+  scale_color_brewer(palette = "RdYlBu") +
+  # scale_color_manual(values = cartography::carto.pal("blue.pal", 5)) +
   # scale_color_paletteer_d("ggsci::red_material", dynamic = TRUE) +
   labs(
     color = "Tallness",
