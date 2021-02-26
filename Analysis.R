@@ -8,12 +8,13 @@ age_results <- read_csv("data/results/roberta-large-mnli__age_nli.csv")
 
 age_results %>%
   # mutate(contradiction = 1 - entailment)
-  group_by(age, categories) %>%
+  group_by(age, categories, type) %>%
   summarize(entailment = mean(entailment)) %>%
   # filter(categories == "young") %>%
   ggplot(aes(age, entailment, color = categories, fill = categories)) +
   geom_line() +
-  geom_smooth(method = "gam")
+  geom_smooth(method = "gam") +
+  facet_wrap(~type)
 
 height_results %>%
   mutate(height = feet*12 + inches) %>%

@@ -23,7 +23,7 @@ heights <- expand_grid(name = people_names$name, feet = 2:8, inches = 1:11, cate
 
 ages <- expand_grid(name = people_names$name, age = 1:100, categories = c("young", "middle aged", "old"), type = c("specified", "nospec")) %>%
   mutate(
-    premise = pmap_chr(list(name, age), function(name, age) {
+    premise = pmap_chr(list(name, age, type), function(name, age, type) {
       if(type == "nospec"){
         glue::glue("{name} is {age}.") %>% as.character()
       }
