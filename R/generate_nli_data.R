@@ -5,7 +5,7 @@ people_names <- babynames::babynames %>%
   summarize(
     n = sum(n)
   ) %>%
-  top_n(10, n)
+  top_n(50, n)
 
 people_names$name
 
@@ -13,7 +13,7 @@ people_names$name
 heights <- expand_grid(name = people_names$name, feet = 2:8, inches = 1:11, categories = c("tall", "short")) %>%
   mutate(
     premise = pmap_chr(list(name, feet, inches), function(name, feet, inches) {
-      glue::glue("{name} is {feet} feet {inches} inches.") %>% as.character()
+      glue::glue("{name}'s height is {feet} feet {inches} inches.") %>% as.character()
     }),
     hypothesis = map2_chr(name, categories, function(x, y) {
       glue::glue("{x} is {y}.") %>% as.character()
@@ -21,14 +21,14 @@ heights <- expand_grid(name = people_names$name, feet = 2:8, inches = 1:11, cate
   )
 
 
-ages <- expand_grid(name = people_names$name, age = 1:100, categories = c("young", "middle aged", "old")) %>%
+ages <- expand_grid(name = people_names$name, age = 1:100, categories = c("young", "middle aged", "old"), type = c("specified", "nospec")) %>%
   mutate(
     premise = pmap_chr(list(name, age), function(name, age) {
-      if(age == 1){
-        glue::glue("{name} is {age} year old.") %>% as.character()
+      if(type == "nospec"){
+        glue::glue("{name} is {age}.") %>% as.character()
       }
       else {
-        glue::glue("{name} is {age} years old.") %>% as.character()
+        glue::glue("{name}'s age is {age}.") %>% as.character()
       }
     }),
     hypothesis = map2_chr(name, categories, function(x, y) {
