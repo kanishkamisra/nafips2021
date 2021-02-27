@@ -96,88 +96,22 @@ celsius <- expand_grid(location = c("noloc", "inside", "in the bedroom", "in the
     })
   )
 
-heights_reversed <- expand_grid(name = people_names$name, feet = 2:8, inches = 1:11, categories = c("tall", "short")) %>%
+nounit_hedging <- expand_grid(location = c("noloc", "inside", "in the bedroom", "in the living room", "in the basement", "outside"), temperature = -50:122, categories = c("warm", "very warm", "extremely warm", "hot", "slightly hot", "very hot", "extremely hot")) %>%
   mutate(
-    premise = map2_chr(name, categories, function(x, y) {
-      glue::glue("{x} is {y}.") %>% as.character()
-    }),
-    hypothesis = pmap_chr(list(name, feet, inches), function(name, feet, inches) {
-      glue::glue("{name} is {feet} feet {inches} inches.") %>% as.character()
-    })
-  )
-
-
-ages_reversed <- expand_grid(name = people_names$name, age = 1:100, categories = c("young", "middle aged", "old")) %>%
-  mutate(
-    premise = map2_chr(name, categories, function(x, y) {
-      glue::glue("{x} is {y}.") %>% as.character()
-    }),
-    hypothesis = pmap_chr(list(name, age), function(name, age) {
-      if(age == 1){
-        glue::glue("{name} is {age} year old.") %>% as.character()
-      }
-      else {
-        glue::glue("{name} is {age} years old.") %>% as.character()
-      }
-    })
-  )
-
-nounit_reversed <- expand_grid(location = c("noloc", "inside", "in the bedroom", "in the living room", "in the basement", "outside"), temperature = -50:122, categories = c("freezing", "cold", "cool", "warm", "hot")) %>%
-  mutate(
-    premise = pmap_chr(list(location, categories), function(location, categories) {
-      if(location == "noloc"){
-        glue::glue("It is {categories}.") %>% as.character()
-      }
-      else {
-        glue::glue("It is {categories} {location}.") %>% as.character()
-      }
-    }),
-    hypothesis = pmap_chr(list(location, temperature), function(location, temperature) {
+    premise = pmap_chr(list(location, temperature), function(location, temperature) {
       if(location == "noloc"){
         glue::glue("It is {temperature} degrees.") %>% as.character()
       }
       else {
         glue::glue("It is {temperature} degrees {location}.") %>% as.character()
       }
-    })
-  )
-
-fahrenheit_reversed <- expand_grid(location = c("noloc", "inside", "in the bedroom", "in the living room", "in the basement", "outside"), temperature = -50:122, categories = c("freezing", "cold", "cool", "warm", "hot")) %>%
-  mutate(
-    premise = pmap_chr(list(location, categories), function(location, categories) {
+    }),
+    hypothesis = pmap_chr(list(location, categories), function(location, categories) {
       if(location == "noloc"){
         glue::glue("It is {categories}.") %>% as.character()
       }
       else {
         glue::glue("It is {categories} {location}.") %>% as.character()
-      }
-    }),
-    hypothesis = pmap_chr(list(location, temperature), function(location, temperature) {
-      if(location == "noloc"){
-        glue::glue("It is {temperature} degrees fahrenheit.") %>% as.character()
-      }
-      else {
-        glue::glue("It is {temperature} degrees fahrenheit {location}.") %>% as.character()
-      }
-    })
-  )
-
-celsius_reversed <- expand_grid(location = c("noloc", "inside", "in the bedroom", "in the living room", "in the basement", "outside"), temperature = -50:50, categories = c("freezing", "cold", "cool", "warm", "hot")) %>%
-  mutate(
-    premise = pmap_chr(list(location, categories), function(location, categories) {
-      if(location == "noloc"){
-        glue::glue("It is {categories}.") %>% as.character()
-      }
-      else {
-        glue::glue("It is {categories} {location}.") %>% as.character()
-      }
-    }),
-    hypothesis = pmap_chr(list(location, temperature), function(location, temperature) {
-      if(location == "noloc"){
-        glue::glue("It is {temperature} degrees celsius.") %>% as.character()
-      }
-      else {
-        glue::glue("It is {temperature} degrees celsius {location}.") %>% as.character()
       }
     })
   )
@@ -187,11 +121,6 @@ write_csv(ages, "data/age_nli.csv")
 write_csv(nounit, "data/nounit_nli.csv")
 write_csv(fahrenheit, "data/fahrenheit_nli.csv")
 write_csv(celsius, "data/celsius_nli.csv")
-
-write_csv(heights_reversed, "data/height_reversed_nli.csv")
-write_csv(ages_reversed, "data/age_reversed_nli.csv")
-write_csv(nounit_reversed, "data/nounit_reversed_nli.csv")
-write_csv(fahrenheit_reversed, "data/fahrenheit_reversed_nli.csv")
-write_csv(celsius_reversed, "data/celsius_reversed_nli.csv")
+write_csv(nounit_hedging, "data/nounit_hedging_nli.csv")
 
 
